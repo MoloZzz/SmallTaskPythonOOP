@@ -56,9 +56,23 @@ class TestConcertManager(unittest.TestCase):
         self.concert1.cancel_booking(1)
         self.assertNotIn(1, self.concert1.bookings)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_sort_concerts_by_date(self):
+        sorted_concerts = self.manager.sort_concerts("date")
+        self.assertEqual(sorted_concerts[0].name, "Rock Night")
+        self.assertEqual(sorted_concerts[-1].name, "Classical Night")
 
+    def test_sort_concerts_by_price(self):
+        sorted_concerts = self.manager.sort_concerts("price")
+        self.assertEqual(sorted_concerts[0].name, "Jazz Evening")
+        self.assertEqual(sorted_concerts[-1].name, "Classical Night")
+
+    def test_book_seat_different_locations(self):
+        self.concert1.book_seat(1, "User1")
+        self.concert2.book_seat(1, "User2")
+        self.concert3.book_seat(1, "User3")
+        self.assertEqual(self.concert1.bookings[1], "User1")
+        self.assertEqual(self.concert2.bookings[1], "User2")
+        self.assertEqual(self.concert3.bookings[1], "User3")
 
 if __name__ == '__main__':
     unittest.main()
